@@ -2,10 +2,23 @@ const Joi = require('joi')
 const express = require('express')
 const app = express()
 
+// get this file or import them internaly inside express
+app.set('view engine', 'pug')
+app.set('views', './views')
+
 
 //enable to pars to jsone by adding json as midel ware so it will add it in pipline 
 // of reciving reques so when we deal with request in the end, it will be alredy parsed  
 app.use(express.json())
+
+
+const loging = (req, res, next) => {
+    console.log('Loging ..... :)')
+    next()
+}
+// so we add here a midel-ware funtion that make something and pass the controler 
+// to the next() function 
+app.use(loging)
 
 
 var users = [
@@ -13,6 +26,10 @@ var users = [
     { id: 2, name: "user2"},
     { id: 3, name: "user3"},
 ]
+
+app.get('/', (req, res) => {
+    res.render('index', { title:"hello", message:"WOW...."})
+});
 
 
 app.get('/user', (req, res) => {
